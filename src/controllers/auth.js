@@ -12,15 +12,19 @@ router.get('/sign-in', (req, res) => {
     })
 })
 
-router.get('/sign-up', async (req, res) => {
+router.post('/sign-up', async (req, res) => {
 
-    const email = 'salvesalve@gmail.com';
-    const password = 'salvesalve'
+    const { email, password } = req.body
+
+    const accountWithEmail = await Account.findOne({ where: { email } })
+    if (accountWithEmail) {
+        return res.json({ error: 'E-mail already registered' })
+    }
+
     const hashPassword = hashSync(password, saltRounds)
+    const newAccount = await Account.create({ email, password: hashPassword })
 
-    const result = await Account.create({ email, password: hashPassword })
-
-    return res.json(result)
+    return res.json(newAccount)
 
 })
 
