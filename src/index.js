@@ -1,8 +1,8 @@
 const express = require('express')
+const app = express()
+const db = require('./models')
 
 const authController = require('./controllers/auth')
-
-const app = express()
 
 // Calls the controller routers when '/auth' is accessed
 app.use('/auth', authController)
@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
     })
 })
 
-app.listen(3333, () => {
-    console.log('App lintening on port 3333')
+db.sequelize.sync().then(() => {
+    app.listen(3333, () => {
+        console.log('App lintening on port 3333')
+    })
 })
+
