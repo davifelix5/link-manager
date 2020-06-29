@@ -10,7 +10,7 @@ const formatErrors = (error, messagePath) => {
 
         const path = `${messagePath}.${key}.${type}`
 
-        errorMessages[key] = { message: getMessage(path) || message, type: type }
+        errorMessages[key] = { message: getMessage(path) || message }
     })
 
     return errorMessages
