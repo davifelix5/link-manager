@@ -18,13 +18,13 @@ router.post('/sign-up', async (req, res) => {
 
     const accountWithEmail = await Account.findOne({ where: { email } })
     if (accountWithEmail) {
-        return res.json({ error: 'E-mail already registered' })
+        return res.jsonBadRequest({ msg: 'Email already registered' })
     }
 
     const hashPassword = hashSync(password, saltRounds)
     const newAccount = await Account.create({ email, password: hashPassword })
 
-    return res.json(newAccount)
+    return res.jsonOK({ data: newAccount, msg: 'Account created successfully' })
 
 })
 
