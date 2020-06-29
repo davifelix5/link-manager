@@ -19,6 +19,8 @@ class ResponseCreator {
     }
 }
 
+const { getMessage } = require('../helpers/messages')
+
 const TYPE_JSON = 'application/json'
 const STATUS_CODE_OK = 200
 const STATUS_CODE_BAD_REQUEST = 400
@@ -30,11 +32,11 @@ module.exports = (req, res, next) => {
 
     const creator = new ResponseCreator(res)
 
-    creator.createPattern('jsonOK', STATUS_CODE_OK, 'Successful request!')
-    creator.createPattern('jsonBadRequest', STATUS_CODE_BAD_REQUEST, 'Bad request!')
-    creator.createPattern('jsonUnauthorized', STATUS_CODE_UNAUTHORIZED, 'You are not allowed to do this!!')
-    creator.createPattern('jsonNotFound', STATUS_CODE_NOT_FOUND, 'Not found!')
-    creator.createPattern('jsonServerError', STATUS_CODE_SERVER_ERROR, 'Sorry, a server error has accured!')
+    creator.createPattern('jsonOK', STATUS_CODE_OK, getMessage('response.ok'))
+    creator.createPattern('jsonBadRequest', STATUS_CODE_BAD_REQUEST, getMessage('response.badRequest'))
+    creator.createPattern('jsonUnauthorized', STATUS_CODE_UNAUTHORIZED, getMessage('response.unauthorized'))
+    creator.createPattern('jsonNotFound', STATUS_CODE_NOT_FOUND, getMessage('response.notFound'))
+    creator.createPattern('jsonServerError', STATUS_CODE_SERVER_ERROR, getMessage('response.serverError'))
 
     next() // Sinaliza que o middleware acabou e a execução pode continuar
 }

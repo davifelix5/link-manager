@@ -1,6 +1,9 @@
 const express = require('express')
+const { getMessage } = require('../helpers/messages')
 const { hashSync } = require('bcrypt')
 const { Account } = require('../models')
+
+const { accountSignUp } = require('../validators/account')
 
 const router = express.Router()
 
@@ -10,19 +13,20 @@ router.get('/sign-in', (req, res) => {
     return res.jsonNotFound()
 })
 
-router.post('/sign-up', async (req, res) => {
+// accountSignUp é um middleware: a requisição vai passar por ele antes
+router.post('/sign-up', accountSignUp, async (req, res) => {
 
     const { email, password } = req.body
 
     const accountWithEmail = await Account.findOne({ where: { email } })
     if (accountWithEmail) {
-        return res.jsonBadRequest({ msg: 'Email already registered' })
+        return res.jsonBadRequest({ msg: getMessage('account.signup.existingEmail') })
     }
 
     const hashPassword = hashSync(password, saltRounds)
     const newAccount = await Account.create({ email, password: hashPassword })
 
-    return res.jsonOK({ data: newAccount, msg: 'Account created successfully' })
+    return res.jsonOK({ data: newAccount, msg: getMessage('account.signup.accountCreated') })
 
 })
 

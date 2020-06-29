@@ -1,0 +1,15 @@
+{
+    "response.ok": "Requisição feita com sucesso!",
+    "response.badRequest": "Requisição inválida",
+    "response.unauthorized": "Você não tem autorização para isso!",
+    "response.notFound": "O que você busca não foi encontrado",
+    "response.serverError": "Desculpe, houve um erro no servidor",
+    "account.signup.existingEmail": "Esse e-mail já foi cadastrado",
+    "account.signup.accountCreated": "Conta criada com sucesso!",
+    "account.signup.password.string.empty": "A senha é obrigatória",
+    "account.signup.password.string.pattern.base": "Sua senha deve ter entre 6 e 30 letras e/ou números!",
+    "account.signup.passwordConfirmation.any.required": "Confirmação de senha é obrigatória!",
+    "account.signup.passwordConfirmation.any.only": "Confirmação inválida!",
+    "account.signup.email.string.empty": "O email é obrigatório!",
+    "account.signup.email.string.email": "Você enviou um email inválido"
+}
