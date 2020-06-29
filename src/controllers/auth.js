@@ -7,9 +7,7 @@ const router = express.Router()
 const saltRounds = 10  // amount of times the encryption is going to run
 
 router.get('/sign-in', (req, res) => {
-    return res.json({
-        action: 'Sign In'
-    })
+    return res.jsonNotFound()
 })
 
 router.post('/sign-up', async (req, res) => {

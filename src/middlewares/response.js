@@ -1,4 +1,24 @@
 
+class ResponseCreator {
+
+    constructor(response) {
+        this.response = response
+    }
+
+    createPattern(functionName, statusCode, defaultMessage) {
+        this.response[functionName] = ({ data, msg, metadata } = {}) => {
+            const status = statusCode
+            msg = (msg) ? msg : defaultMessage
+            metadata = (metadata) ? metadata : {}
+            data = (data) ? data : {}
+
+            this.response.status(status);
+            this.response.type(TYPE_JSON)
+            return this.response.json({ data, msg, metadata, status: status })
+        }
+    }
+}
+
 const TYPE_JSON = 'application/json'
 const STATUS_CODE_OK = 200
 const STATUS_CODE_BAD_REQUEST = 400
@@ -6,68 +26,15 @@ const STATUS_CODE_UNAUTHORIZED = 401
 const STATUS_CODE_NOT_FOUND = 404
 const STATUS_CODE_SERVER_ERROR = 500
 
-const jsonOK = function ({ data, msg, metadata }) {
-    const status = STATUS_CODE_OK
-    msg = (msg) ? msg : 'Successful request!'
-    metadata = (metadata) ? metadata : {}
-    data = (data) ? data : {}
-
-    this.status(status);
-    this.type(TYPE_JSON)
-    return this.json({ data, msg, metadata, status: status })
-}
-
-const jsonBadRequest = function ({ data, msg, metadata }) {
-    const status = STATUS_CODE_BAD_REQUEST
-    msg = (msg) ? msg : 'Bad request!'
-    metadata = (metadata) ? metadata : {}
-    data = (data) ? data : {}
-
-    this.status(status);
-    this.type(TYPE_JSON)
-    return this.json({ data, msg, metadata, status: status })
-}
-
-const jsonUnauthorized = function ({ data, msg, metadata }) {
-    const status = STATUS_CODE_UNAUTHORIZED
-    msg = (msg) ? msg : "You do not have permission to do this!"
-    metadata = (metadata) ? metadata : {}
-    data = (data) ? data : {}
-
-    this.status(status);
-    this.type(TYPE_JSON)
-    return this.json({ data, msg, metadata, status: status })
-}
-
-const jsonNotFound = function ({ data, msg, metadata }) {
-    const status = STATUS_CODE_NOT_FOUND
-    msg = (msg) ? msg : "Not found!"
-    metadata = (metadata) ? metadata : {}
-    data = (data) ? data : {}
-
-    this.status(status);
-    this.type(TYPE_JSON)
-    return this.json({ data, msg, metadata, status: status })
-}
-
-const jsonServerError = function ({ data, msg, metadata }) {
-    const status = STATUS_CODE_SERVER_ERROR
-    msg = (msg) ? msg : "Sorry, a server error has occured!"
-    metadata = (metadata) ? metadata : {}
-    data = (data) ? data : {}
-
-    this.status(status);
-    this.type(TYPE_JSON)
-    return this.json({ data, msg, metadata, status: status })
-}
-
 module.exports = (req, res, next) => {
 
-    res.jsonOK = jsonOK
-    res.jsonBadRequest = jsonBadRequest
-    res.jsonUnauthorized = jsonUnauthorized
-    res.jsonNotFound = jsonNotFound
-    res.jsonServerError = jsonServerError
-    
+    const creator = new ResponseCreator(res)
+
+    creator.createPattern('jsonOK', STATUS_CODE_OK, 'Successful request!')
+    creator.createPattern('jsonBadRequest', STATUS_CODE_BAD_REQUEST, 'Bad request!')
+    creator.createPattern('jsonUnauthorized', STATUS_CODE_UNAUTHORIZED, 'You are not allowed to do this!!')
+    creator.createPattern('jsonNotFound', STATUS_CODE_NOT_FOUND, 'Not found!')
+    creator.createPattern('jsonServerError', STATUS_CODE_SERVER_ERROR, 'Sorry, a server error has accured!')
+
     next() // Sinaliza que o middleware acabou e a execução pode continuar
 }
