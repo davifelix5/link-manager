@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const db = require('./models')
 const router = require('./routes')
 
@@ -6,6 +7,8 @@ const responseMiddleware = require('./middlewares/response')
 const checkJwt = require('./middlewares/jwt')
 
 const app = express()
+
+app.use(cors())
 
 // MIDDLEWARES: executam o código antes de prosseguir com a execução do código
 
