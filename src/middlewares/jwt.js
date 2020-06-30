@@ -3,6 +3,14 @@ const { getMessage } = require('../helpers/messages')
 
 const checkJwt = (req, res, next) => {
 
+    const { url } = req
+
+    const excludedPaths = ['/auth/sign-in', '/auth/sign-up']
+
+    const excluded = Boolean(excludedPaths.find(path => path.startsWith(url)))
+
+    if (excluded) return next()
+
     let token = req.headers['authorization']
     token = token ? token.slice(7, token.length) : null
 
@@ -13,15 +21,11 @@ const checkJwt = (req, res, next) => {
     try {
         const decodedToken = verifyJwt(token)
         req.accountId = decodedToken.id
-        // console.log('Toker expires in: ' + new Date(decodedToken.exp * 1000).toString())
+        // console.log('Token expires in: ' + new Date(decodedToken.exp * 1000).toString())
         next()
     } catch {
         return res.jsonUnauthorized({ msg: getMessage('jwt.invalidToken') })
     }
-
-    // req.accountId = 8
-
-    // next()
 
 }
 
