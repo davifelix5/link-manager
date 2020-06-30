@@ -9,4 +9,6 @@ router.post('/sign-in', accountSignIn, accountController.login)
 
 router.post('/sign-up', accountSignUp, accountController.create)
 
+router.post('/refresh', accountController.getTokenFromRefresh)
+
 module.exports = router

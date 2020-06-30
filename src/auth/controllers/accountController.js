@@ -1,7 +1,12 @@
 const { getMessage } = require('../../helpers/messages')
 const { hashSync, compareSync } = require('bcrypt')
 const { Account } = require('../../models')
-const { generateJwt, generateRefreshJwt } = require('../../helpers/jwt')
+const {
+    generateJwt,
+    generateRefreshJwt,
+    getTokenFromHeaders,
+    verifyRefreshJwt
+} = require('../../helpers/jwt')
 
 module.exports = {
     create: async (req, res) => {
@@ -39,7 +44,10 @@ module.exports = {
         if (!match) return res.jsonBadRequest({ msg: getMessage('account.signin.invalid') })
 
         const token = generateJwt({ id: accountWithEmail.id })
-        const refreshToken = generateRefreshJwt({ id: accountWithEmail.id, version: accountWithEmail.jwtVersion })
+        const refreshToken = generateRefreshJwt({
+            id: accountWithEmail.id,
+            version: accountWithEmail.jwtVersion
+        })
 
         return res.jsonOK({
             data: accountWithEmail,
@@ -47,5 +55,26 @@ module.exports = {
             msg: getMessage('account.signin.success')
         })
 
+    },
+
+    getTokenFromRefresh: async (req, res) => {
+        const token = getTokenFromHeaders(req.headers)
+        console.log(token)
+        try {
+            const decodedToken = verifyRefreshJwt(token)
+
+            const account = await Account.findByPk(decodedToken.id)
+            if (!account || decodedToken.version !== account.jwtVersion)
+                return res.jsonUnauthorized({ msg: getMessage('jwt.invalidToken') })
+
+            const metadata = {
+                token: generateJwt({ id: account.id })
+            }
+
+            return res.jsonOK({ metadata })
+
+        } catch {
+            return res.jsonUnauthorized({ msg: getMessage('jwt.invalidToken') })
+        }
     }
 }

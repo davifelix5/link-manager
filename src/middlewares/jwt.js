@@ -1,18 +1,17 @@
-const { verifyJwt } = require('../helpers/jwt')
+const { verifyJwt, getTokenFromHeaders } = require('../helpers/jwt')
 const { getMessage } = require('../helpers/messages')
 
 const checkJwt = (req, res, next) => {
 
     const { url } = req
 
-    const excludedPaths = ['/auth/sign-in', '/auth/sign-up']
+    const excludedPaths = ['/auth/sign-in', '/auth/sign-up', '/auth/refresh']
 
     const excluded = Boolean(excludedPaths.find(path => path.startsWith(url)))
 
     if (excluded) return next()
 
-    let token = req.headers['authorization']
-    token = token ? token.slice(7, token.length) : null
+    const token = getTokenFromHeaders(req.headers)
 
     if (!token) {
         return res.jsonUnauthorized({ msg: getMessage('jwt.invalidToken') })
