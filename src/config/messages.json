@@ -24,5 +24,6 @@
     "links.update.success": "Link atualizado com sucesso",
     "links.list.success": "Links encontrados com sucesso",
     "links.list.notFound": "Não há links registrados!",
-    "links.delete.success": "Link deletado com sucesso"
+    "links.delete.success": "Link deletado com sucesso",
+    "jwt.invalidToken": "Token inválido"
 }

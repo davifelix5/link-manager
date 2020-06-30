@@ -3,6 +3,7 @@ const db = require('./models')
 const router = require('./routes')
 
 const responseMiddleware = require('./middlewares/response')
+const checkJwt = require('./middlewares/jwt')
 
 const app = express()
 
@@ -10,6 +11,8 @@ const app = express()
 
 // Padrozina as respostas
 app.use(responseMiddleware)
+// Verifica a autenticação
+app.use(checkJwt)
 // Capacidade de ler dados em JSON format
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

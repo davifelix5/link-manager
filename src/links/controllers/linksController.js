@@ -5,9 +5,9 @@ const { get } = require('../../auth/routes')
 module.exports = {
 
     create: async (req, res) => {
-        const { label, url, isSocial } = req.body
-        const accountId = 8 // hard coded for tests
-        const image = 'htpps:/google.com/image.jpg' // hard coded for test
+        const { accountId, body } = req
+        const { label, url, isSocial } = body
+        const image = 'htpps:/google.com/image.jpg'
 
         const newLink = await Link.create({ label, url, isSocial, accountId, image })
 
@@ -19,7 +19,7 @@ module.exports = {
 
     list: async (req, res) => {
 
-        const accountId = 8
+        const { accountId } = req
 
         const links = await Link.findAll({ where: { accountId } })
 
@@ -30,7 +30,7 @@ module.exports = {
 
     show: async (req, res) => {
         const { id } = req.params
-        const accountId = 8
+        const { accountId } = req
 
         const link = await Link.findOne({ where: { id, accountId } })
 
@@ -40,11 +40,10 @@ module.exports = {
     },
 
     update: async (req, res) => {
-        const { body } = req
+        const { body, accountId } = req
         const editableFields = ['label', 'url', 'isSocial']
 
         const { id } = req.params
-        const accountId = 8
 
         const link = await Link.findOne({ where: { id, accountId } })
         if (!link) return res.jsonNotFound({ msg: getMessage('links.show.notFound') })
@@ -63,7 +62,7 @@ module.exports = {
     },
 
     delete: async (req, res) => {
-        const accountId = 8
+        const { accountId } = req
         const { id } = req.params
         const link = await Link.findOne({ where: { id, accountId } })
 
