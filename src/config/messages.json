@@ -11,5 +11,11 @@
     "account.signup.passwordConfirmation.any.required": "Confirmação de senha é obrigatória!",
     "account.signup.passwordConfirmation.any.only": "Confirmação inválida!",
     "account.signup.email.string.empty": "O email é obrigatório!",
-    "account.signup.email.string.email": "Você enviou um email inválido"
+    "account.signup.email.string.email": "Você enviou um email inválido",
+    "account.signin.invalid": "Credenciais inválidas",
+    "account.signin.success": "Login efetuado com sucesso!",
+    "account.signin.password.string.empty": "A senha é obrigatória",
+    "account.signin.password.string.pattern.base": "Sua senha deve ter entre 6 e 30 letras e/ou números!",
+    "account.signin.email.string.empty": "O email é obrigatório!",
+    "account.signin.email.string.email": "Você enviou um email inválido"
 }

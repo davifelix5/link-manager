@@ -17,4 +17,4 @@ const formatErrors = (error, messagePath) => {
 
 }
 
-module.exports = { formatErrors, getMessage }
+module.exports = { formatErrors }
