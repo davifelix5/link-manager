@@ -19,7 +19,7 @@ module.exports = {
         const newAccount = await Account.create({ email, password: hashPassword })
 
         const token = generateJwt({ id: newAccount.id })
-        const refreshToken = generateRefreshJwt({ id: newAccount.id })
+        const refreshToken = generateRefreshJwt({ id: newAccount.id, version: newAccount.jwtVersion })
 
         return res.jsonOK({
             data: newAccount,
@@ -39,10 +39,10 @@ module.exports = {
         if (!match) return res.jsonBadRequest({ msg: getMessage('account.signin.invalid') })
 
         const token = generateJwt({ id: accountWithEmail.id })
-        const refreshToken = generateRefreshJwt({ id: accountWithEmail.id })
+        const refreshToken = generateRefreshJwt({ id: accountWithEmail.id, version: accountWithEmail.jwtVersion })
 
         return res.jsonOK({
-            account: accountWithEmail,
+            data: accountWithEmail,
             metadata: { token, refreshToken },
             msg: getMessage('account.signin.success')
         })
