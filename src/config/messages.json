@@ -17,5 +17,12 @@
     "account.signin.password.string.empty": "A senha é obrigatória",
     "account.signin.password.string.pattern.base": "Sua senha deve ter entre 6 e 30 letras e/ou números!",
     "account.signin.email.string.empty": "O email é obrigatório!",
-    "account.signin.email.string.email": "Você enviou um email inválido"
+    "account.signin.email.string.email": "Você enviou um email inválido",
+    "links.show.notFound": "Esse link não existe",
+    "links.show.success": "Link encontrado com sucesso",
+    "links.create.success": "Link criado com sucesso",
+    "links.update.success": "Link atualizado com sucesso",
+    "links.list.success": "Links encontrados com sucesso",
+    "links.list.notFound": "Não há links registrados!",
+    "links.delete.success": "Link deletado com sucesso"
 }
