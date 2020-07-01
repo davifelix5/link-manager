@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const db = require('./models')
-const router = require('./routes')
+const routes = require('./routes')
 
 const responseMiddleware = require('./middlewares/response')
 const checkJwt = require('./middlewares/jwt')
@@ -11,18 +11,15 @@ const app = express()
 app.use(cors())
 
 // MIDDLEWARES: executam o código antes de prosseguir com a execução do código
-
-// Padrozina as respostas
-app.use(responseMiddleware)
-// Verifica a autenticação
-app.use(checkJwt)
-// Capacidade de ler dados em JSON format
-app.use(express.json())
+app.use(responseMiddleware) // Padrozina as respostas
+app.use(checkJwt) // Verifica a autenticação
+app.use(express.json()) // Capacidade de ler dados em JSON format
 app.use(express.urlencoded({ extended: false }))
 
-// Rotas do meu projeto
-app.use(router)
+// MY ROUTES
+app.use(routes)
 
+// SERVER INITIALIZATION
 db.sequelize.sync().then(() => {
     app.listen(3333, () => {
         console.log('App listening on port 3333')

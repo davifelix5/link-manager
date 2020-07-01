@@ -1,5 +1,6 @@
 const Joi = require('@hapi/joi');
 const { formatErrors } = require('../../helpers/validator')
+const { getCredentials } = require('../../helpers/jwt')
 
 const validationRules = {
     email: Joi.string().email().required(),
@@ -13,9 +14,7 @@ module.exports = {
 
     accountSignIn: (req, res, next) => {
 
-        // Definindo especificamente essas variáveis, ele apenas ignora as chaves desconhecidas,
-        // não gerando um erro
-        const { email, password } = req.body
+        const [email, password] = getCredentials(req.headers.authorization)
 
         const schema = Joi.object({
             email: validationRules.email,

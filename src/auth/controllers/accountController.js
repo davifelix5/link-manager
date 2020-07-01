@@ -5,7 +5,8 @@ const {
     generateJwt,
     generateRefreshJwt,
     getTokenFromHeaders,
-    verifyRefreshJwt
+    verifyRefreshJwt,
+    getCredentials
 } = require('../../helpers/jwt')
 
 module.exports = {
@@ -36,7 +37,7 @@ module.exports = {
 
     login: async (req, res) => {
 
-        const { email, password } = req.body
+        const [email, password] = getCredentials(req.headers.authorization)
 
         const accountWithEmail = await Account.findOne({ where: { email } })
         const match = accountWithEmail ? compareSync(password, accountWithEmail.password) : null

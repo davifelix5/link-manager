@@ -22,8 +22,13 @@ module.exports = {
     verifyRefreshJwt: token => jwt.verify(token, refreshTokenPrivateKey),
 
     getTokenFromHeaders: headers => {
-        const token = headers['authorization']
-        return token ? token.slice(7, token.length) : null
+        const [, token] = headers['authorization'].split(' ')
+        return token
+    },
+
+    getCredentials: header => {
+        const [, hash] = header.split(' ')
+        return Buffer.from(hash, 'base64').toString().split(':')
     }
 
 }
