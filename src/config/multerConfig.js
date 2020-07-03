@@ -19,11 +19,13 @@ module.exports = {
         const allowedExtensions = ['.png', '.jpg', '.jpeg']
         const allAllowed = allowedExtensions.filter(ext => ext === extension)
 
-        return allAllowed.length === 0
-            ?
-            callback(new Error('Apenas imagens são permitidas'))
-            :
-            callback(null, true)
+        if (allAllowed.length === 0) {
+            req.fileExtensionInvalid = 'Apenas imagens são aceitas'
+            return callback(null, false)
+        }
+
+        callback(null, true)
+
     }
 }
 

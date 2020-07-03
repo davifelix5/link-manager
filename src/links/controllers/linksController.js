@@ -4,6 +4,11 @@ const { getMessage } = require('../../helpers/messages')
 module.exports = {
 
     create: async (req, res) => {
+
+        if (req.fileExtensionInvalid) {
+            return res.jsonServerError({ msg: req.fileExtensionInvalid })
+        }
+
         const { accountId, body, file } = req
         const { label, url } = body
         const isSocial = body.isSocial === "true" ? true : false
