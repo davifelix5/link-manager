@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Link } = require('../../models')
 const { getMessage } = require('../../helpers/messages')
 
@@ -26,22 +27,31 @@ module.exports = {
 
         const { accountId } = req
 
-        const links = await Link.findAll({ where: { accountId } })
+        const links = await Link.findAll({ raw: true, where: { accountId } })
 
         if (links.length === 0) return res.jsonNotFound({ msg: getMessage('links.list.notFound') })
 
-        return res.jsonOK({ data: links, msg: getMessage('links.list.success') })
+        const serializedLinks = links.map(link => {
+            return {
+                ...link,
+                image: `${process.env.BASE_STATIC_URL}${link.image}`
+            }
+        })
+
+        return res.jsonOK({ data: serializedLinks, msg: getMessage('links.list.success') })
     },
 
     show: async (req, res) => {
         const { id } = req.params
         const { accountId } = req
 
-        const link = await Link.findOne({ where: { id, accountId } })
+        const link = await Link.findOne({ raw: true, where: { id, accountId } })
 
         if (!link) return res.jsonNotFound({ msg: getMessage('links.show.notFound') })
 
-        return res.jsonOK({ data: link, msg: getMessage('links.show.success') })
+        const serializedLink = { ...link, image: `${process.env.BASE_STATIC_URL}${link.image}` }
+
+        return res.jsonOK({ data: serializedLink, msg: getMessage('links.show.success') })
     },
 
     update: async (req, res) => {

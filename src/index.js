@@ -6,6 +6,7 @@ const routes = require('./routes')
 
 const responseMiddleware = require('./middlewares/response')
 const checkJwt = require('./middlewares/jwt')
+const checkImage = require('./middlewares/images')
 
 const app = express()
 
@@ -16,7 +17,7 @@ app.use(responseMiddleware) // Padrozina as respostas
 app.use(checkJwt) // Verifica a autenticação
 app.use(express.json()) // Capacidade de ler dados em JSON format
 app.use(express.urlencoded({ extended: false }))
-app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
+app.use('/uploads', checkImage, express.static(path.resolve(__dirname, '..', 'uploads')))
 // MY ROUTES
 app.use(routes)
 
