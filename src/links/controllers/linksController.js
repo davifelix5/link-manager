@@ -1,13 +1,13 @@
 const { Link } = require('../../models')
 const { getMessage } = require('../../helpers/messages')
-const { get } = require('../../auth/routes')
 
 module.exports = {
 
     create: async (req, res) => {
-        const { accountId, body } = req
-        const { label, url, isSocial } = body
-        const image = 'htpps:/google.com/image.jpg'
+        const { accountId, body, file } = req
+        const { label, url } = body
+        const isSocial = body.isSocial === "true" ? true : false
+        const image = file.filename
 
         const newLink = await Link.create({ label, url, isSocial, accountId, image })
 
@@ -66,7 +66,7 @@ module.exports = {
         const { id } = req.params
         const link = await Link.findOne({ where: { id, accountId } })
 
-        if (!link) return res.jsonNotFond({ msg: getMessage('links.show.notFound') })
+        if (!link) return res.jsonNotFound({ msg: getMessage('links.show.notFound') })
 
         await link.destroy()
 
